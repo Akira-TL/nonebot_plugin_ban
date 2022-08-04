@@ -17,6 +17,7 @@ from nonebot import on_command,get_driver, on_message
 from nonebot.permission import SUPERUSER
 from nonebot.rule import to_me
 from nonebot.log import logger
+from nonebot.matcher import Matcher
 import json
 import re
 from nonebot.adapters.onebot.v11 import (
@@ -110,30 +111,35 @@ async def _(event:Event):
             txt = '当前无禁用关键词'
     await query.finish(txt)
 
-block = on_message(block=False,priority=pr+1)
-@block.handle()
-async def _(event:Event):
+blockf = on_message(priority=pr+1,block=False)
+@blockf.handle()
+async def _(event:Event,matcher:Matcher):
     txt = event.get_plaintext()
     id = re.findall('(\d+)',event.get_session_id())[0]
     check_file()
     with open('data/ban.json','r', encoding= 'utf-8') as f:
         content:dict = json.load(f)
     if content['all'][0]:
-        block.stop_propagation(block)
+        debug('1')
+        matcher.stop_propagation()
     try:
         for keyworld in content['all'][1:]:
                 if keyworld in txt:
-                    block.stop_propagation(block)
+                    debug('2')
+                    matcher.stop_propagation()
                     break
         if content[id][0]:
-            block.stop_propagation(block)
+            debug('3')
+            matcher.stop_propagation()
         else:
             for keyworld in content[id][1:]:
                 if keyworld in txt:
-                    block.stop_propagation(block)
+                    debug('4')
+                    matcher.stop_propagation()
                     break
+        pass
     except KeyError:
-        return
+        pass
 
 # {'all':[true,xxx,xxx...],
 # group1:[is_band_all,xxx,xxx,...],

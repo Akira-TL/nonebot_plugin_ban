@@ -9,6 +9,7 @@
 '''
 
 import json
+import os
 
 from nonebot.log import logger
 
@@ -22,6 +23,10 @@ def debug(text:str):
     logger.debug('\033[95m' + __name__[12:-6] + '\033[0m | ' + str(text))
 
 def check_file():
+    try:
+        os.mkdir('data')
+    except:
+        pass
     try:
         with open('data/ban.json','r', encoding= 'utf-8') as f:pass
     except FileNotFoundError:
