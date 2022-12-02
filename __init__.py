@@ -27,15 +27,7 @@ from nonebot.adapters.onebot.v11 import (
     Event,
     )
 
-def debug(text:str):
-    '''
-    @说明:
-        对官方debug方法的扩写,将文件地址写入debug消息方便查看日志
-    @返回:
-        none
-    '''
-    logger.debug('\033[95m' + __name__[12:] + '\033[0m | ' + str(text))
-
+debug = logger.debug
 self_replay = on_message(block=False)
 @self_replay.handle()
 async def _(event:Event):
@@ -48,6 +40,7 @@ pr = 5
 ban = on_command('ban',aliases=set('rm'),priority=pr,permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER,block=False)
 @ban.handle()
 async def _(event:Event):
+    debug('jjj')
     txt = event.get_plaintext()
     cmd = txt.split(' ')[0][1:]
     if cmd in ['ban','rm']:

@@ -12,15 +12,7 @@ import json
 import os
 
 from nonebot.log import logger
-
-def debug(text:str):
-    '''
-    @说明:
-        对官方debug方法的扩写,将文件地址写入debug消息方便查看日志
-    @返回:
-        none
-    '''
-    logger.debug('\033[95m' + __name__[12:-6] + '\033[0m | ' + str(text))
+debug = logger.debug
 
 def check_file():
     try:
